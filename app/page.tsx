@@ -41,9 +41,7 @@ export default function Home() {
                 <div className="h-full bg-gradient-to-r from-stone-400 to-stone-300 w-[75%] rounded-full 
                   animate-pulse transition-all duration-1000" />
               </div>
-              <p className="text-stone-400 mt-4 text-sm">
-                Təxmini bərpa vaxtı: <span className="font-semibold text-stone-200">24 saat</span>
-              </p>
+
             </div>
           </div>
 
