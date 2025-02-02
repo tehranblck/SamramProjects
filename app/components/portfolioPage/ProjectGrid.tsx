@@ -70,7 +70,7 @@ const categories = [
 export default function ProjectGrid() {
     const [activeCategory, setActiveCategory] = useState('all');
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
+    console.log(selectedProject)
     const filteredProjects = projects.filter(project =>
         activeCategory === 'all' || project.category === activeCategory
     );
@@ -80,7 +80,7 @@ export default function ProjectGrid() {
             <div className="container mx-auto px-4">
                 {/* Filter Buttons */}
                 <div className="flex flex-wrap gap-4 justify-center mb-12">
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                         <button
                             key={category.id}
                             onClick={() => setActiveCategory(category.id)}
