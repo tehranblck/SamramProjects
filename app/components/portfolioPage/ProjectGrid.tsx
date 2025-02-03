@@ -6,96 +6,70 @@ import { motion } from 'framer-motion';
 
 interface Project {
     id: number;
+    documentId: string;
     title: string;
-    category: string;
-    image: string;
     description: string;
+    category: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    image: {
+        url: string;
+        formats: {
+            thumbnail: { url: string };
+            small: { url: string };
+            medium: { url: string };
+            large: { url: string };
+        }
+    }
 }
 
-const projects = [
-    {
-        id: 1,
-        title: 'Yaşayış Kompleksi',
-        category: 'residential',
-        image: '/bg2.jpg',
-        description: 'Modern yaşayış kompleksi layihəsi'
-
-    },
-    {
-        id: 2,
-        title: 'Ticarət Mərkəzi',
-        category: 'commercial',
-        image: '/bg3.jpg',
-        description: 'Müasir ticarət mərkəzi'
-    },
-    {
-        id: 3,
-        title: 'Villa',
-        category: 'residential',
-        image: '/bg2.jpg',
-        description: 'Lüks villa layihəsi'
-    },
-    {
-        id: 4,
-        title: 'Ofis Binası',
-        category: 'commercial',
-        image: '/bg1.jpg',
-        description: 'A klass ofis binası'
-    },
-    {
-        id: 5,
-        title: 'Otel',
-        category: 'hospitality',
-        image: '/bg3.jpg',
-        description: '5 ulduzlu otel'
-    },
-    {
-        id: 6,
-        title: 'İdman Kompleksi',
-        category: 'sports',
-        image: '/bg2.jpg',
-        description: 'Olimpiya standartlarında idman kompleksi'
-
+interface ProjectGridProps {
+    projects: {
+        data: Project[];
+        meta: {
+            pagination: {
+                page: number;
+                pageSize: number;
+                pageCount: number;
+                total: number;
+            }
+        }
     }
-];
+}
 
-const categories = [
-    { id: 'all', label: 'Hamısı' },
-    { id: 'residential', label: 'Yaşayış' },
-    { id: 'commercial', label: 'Ticarət' },
-    { id: 'hospitality', label: 'Otel' },
-    { id: 'sports', label: 'İdman' }
-];
-
-export default function ProjectGrid() {
+export default function ProjectGrid({ projects }: ProjectGridProps) {
+    const baseUrl = "https://api.samramprojects.com";
+    // Benzersiz kategorileri al
+    const uniqueCategories = ['all', ...new Set(projects.data.map(project => project.category))];
     const [activeCategory, setActiveCategory] = useState('all');
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    console.log(selectedProject)
-    const filteredProjects = projects.filter(project =>
+
+    const filteredProjects = projects.data.filter(project =>
         activeCategory === 'all' || project.category === activeCategory
     );
 
     return (
-        <section className="py-20">
+        <section className="py-12 md:py-20">
             <div className="container mx-auto px-4">
                 {/* Filter Buttons */}
-                <div className="flex flex-wrap gap-4 justify-center mb-12">
-                    {categories?.map((category) => (
+                <div className="flex flex-wrap gap-3 md:gap-4 justify-center mb-8 md:mb-12">
+                    {uniqueCategories.map((category) => (
                         <button
-                            key={category.id}
-                            onClick={() => setActiveCategory(category.id)}
-                            className={`px-6 py-2 rounded-full transition-colors duration-200 
-                                ${activeCategory === category.id
+                            key={category}
+                            onClick={() => setActiveCategory(category)}
+                            className={`px-4 md:px-6 py-2 text-sm md:text-base rounded-full transition-colors duration-200 
+                                ${activeCategory === category
                                     ? 'bg-stone-900 text-white'
                                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'}`}
                         >
-                            {category.label}
+                            {category === 'all' ? 'Hamısı' : category}
                         </button>
                     ))}
                 </div>
 
                 {/* Projects Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                     {filteredProjects.map((project) => (
                         <motion.div
                             key={project.id}
@@ -107,17 +81,19 @@ export default function ProjectGrid() {
                             className="group cursor-pointer"
                             onClick={() => setSelectedProject(project)}
                         >
-                            <div className="relative h-[300px] overflow-hidden rounded-lg">
+                            <div className="relative h-[250px] md:h-[300px] overflow-hidden rounded-lg">
                                 <Image
-                                    src={project.image}
+                                    src={project?.image?.url ? `${baseUrl}${project.image.url}` : '/placeholder.jpg'}
                                     alt={project.title}
                                     fill
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    priority
                                 />
                                 <div className="absolute inset-0 bg-stone-900/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                     <div className="text-center text-white p-4">
-                                        <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                                        <p className="text-stone-200">{project.description}</p>
+                                        <h3 className="text-lg md:text-xl font-bold mb-2">{project.title}</h3>
+                                        <p className="text-sm md:text-base text-stone-200">{project.description}</p>
                                     </div>
                                 </div>
                             </div>

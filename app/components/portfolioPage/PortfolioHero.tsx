@@ -2,11 +2,11 @@
 
 export default function PortfolioHero() {
     return (
-        <section className="relative h-[40vh] flex items-center justify-center">
+        <section className="relative h-[60vh] flex items-center justify-center">
             <div
                 className="absolute inset-0 bg-cover bg-center bg-fixed"
                 style={{
-                    backgroundImage: 'url(/portfolio-hero.jpg)',
+                    backgroundImage: 'url(/bg1.jpg)',
                 }}
             >
                 <div className="absolute inset-0 bg-black/60" />

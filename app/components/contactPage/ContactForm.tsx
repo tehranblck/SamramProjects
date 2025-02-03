@@ -10,11 +10,38 @@ export default function ContactForm() {
         phone: '',
         message: ''
     });
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Form submission logic here
-        console.log(formData);
+        setStatus('loading');
+
+        try {
+            const response = await fetch('https://formspree.io/f/mnnjvloa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    message: ''
+                });
+                setTimeout(() => setStatus('idle'), 3000);
+            } else {
+                setStatus('error');
+                setTimeout(() => setStatus('idle'), 3000);
+            }
+        } catch (error) {
+            setStatus('error');
+            setTimeout(() => setStatus('idle'), 3000);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,14 +52,16 @@ export default function ContactForm() {
     };
 
     return (
-        <section className="py-20">
+        <section className="py-12 md:py-20">
             <div className="container mx-auto px-4">
-                <div className="grid md:grid-cols-2 gap-12">
+                <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                     {/* Contact Info */}
-                    <div className="space-y-8">
+                    <div className="space-y-6 md:space-y-8">
                         <div>
-                            <h2 className="text-3xl font-bold mb-6 text-gray-100">Əlaqə Məlumatları</h2>
-                            <p className="text-gray-300 mb-8">
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-100">
+                                Əlaqə Məlumatları
+                            </h2>
+                            <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8">
                                 Bizimlə əlaqə saxlamaq üçün aşağıdakı məlumatlardan istifadə edə bilərsiniz
                             </p>
                         </div>
@@ -87,9 +116,11 @@ export default function ContactForm() {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-stone-50 p-8 rounded-lg shadow-lg">
-                        <h2 className="text-2xl font-bold mb-6 text-stone-900">Mesaj Göndərin</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="bg-stone-50 p-6 md:p-8 rounded-lg shadow-lg">
+                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-stone-900">
+                            Mesaj Göndərin
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-stone-700 mb-1">
                                     Ad Soyad
@@ -152,10 +183,26 @@ export default function ContactForm() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-stone-900 text-white py-3 px-6 rounded-md hover:bg-stone-800 transition-colors duration-200"
+                                disabled={status === 'loading'}
+                                className={`w-full py-3 px-6 rounded-md transition-colors duration-200 ${status === 'loading'
+                                        ? 'bg-stone-400 cursor-not-allowed'
+                                        : 'bg-stone-900 hover:bg-stone-800'
+                                    } text-white`}
                             >
-                                Göndər
+                                {status === 'loading' ? 'Göndərilir...' : 'Göndər'}
                             </button>
+
+                            {/* Status Messages */}
+                            {status === 'success' && (
+                                <div className="p-4 bg-green-100 text-green-700 rounded-md">
+                                    Mesajınız uğurla göndərildi. Tezliklə sizinlə əlaqə saxlanılacaq.
+                                </div>
+                            )}
+                            {status === 'error' && (
+                                <div className="p-4 bg-red-100 text-red-700 rounded-md">
+                                    Xəta baş verdi. Zəhmət olmasa bir az sonra yenidən cəhd edin.
+                                </div>
+                            )}
                         </form>
                     </div>
                 </div>
