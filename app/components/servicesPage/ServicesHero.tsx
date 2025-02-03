@@ -4,7 +4,7 @@ export default function ServicesHero() {
     return (
         <section className="relative h-[40vh] md:h-[60vh] flex items-center justify-center">
             <div
-                className="absolute inset-0 bg-cover bg-bottom bg-fixed"
+                className="absolute inset-0 bg-cover bg-center md:bg-fixed"
                 style={{
                     backgroundImage: 'url(/services.jpg)',
                 }}

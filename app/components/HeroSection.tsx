@@ -53,12 +53,11 @@ export default function HeroSection() {
         <div className="relative h-[100vh] pt-36 w-full overflow-hidden">
             {/* Background Slider */}
             {slides.map((slide, index) => (
-                <div style={{ backgroundImage: `url(${slide.image})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}
+                <div style={{ backgroundImage: `url(${slide.image})` }}
                     key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out
+                    className={`absolute inset-0 bg-cover bg-center md:bg-fixed transition-opacity duration-1000 ease-in-out
                         ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
                 >
-
                     <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
                 </div>
             ))}

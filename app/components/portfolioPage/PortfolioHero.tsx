@@ -4,7 +4,7 @@ export default function PortfolioHero() {
     return (
         <section className="relative h-[60vh] flex items-center justify-center">
             <div
-                className="absolute inset-0 bg-cover bg-center bg-fixed"
+                className="absolute inset-0 bg-cover bg-center md:bg-fixed"
                 style={{
                     backgroundImage: 'url(/bg1.jpg)',
                 }}
