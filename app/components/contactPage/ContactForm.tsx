@@ -35,10 +35,10 @@ export default function ContactForm() {
                 });
                 setTimeout(() => setStatus('idle'), 3000);
             } else {
-                setStatus('error');
-                setTimeout(() => setStatus('idle'), 3000);
+                throw new Error('Form submission failed');
             }
-        } catch (error) {
+        } catch (_) {
+            console.log(_)
             setStatus('error');
             setTimeout(() => setStatus('idle'), 3000);
         }
@@ -108,7 +108,7 @@ export default function ContactForm() {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-gray-200">Ünvan</h3>
-                                    <p className="text-gray-300">Bakı şəhəri, Azərbaycan</p>
+                                    <p className="text-gray-300">AZ1106  Baki şəhəri Binəqədi rayonu, M.Rəsulzadə ŞTQ, səttar Bəhlulzadə,ev Dön 2,m.16</p>
                                 </div>
                             </div>
 
@@ -185,8 +185,8 @@ export default function ContactForm() {
                                 type="submit"
                                 disabled={status === 'loading'}
                                 className={`w-full py-3 px-6 rounded-md transition-colors duration-200 ${status === 'loading'
-                                        ? 'bg-stone-400 cursor-not-allowed'
-                                        : 'bg-stone-900 hover:bg-stone-800'
+                                    ? 'bg-stone-400 cursor-not-allowed'
+                                    : 'bg-stone-900 hover:bg-stone-800'
                                     } text-white`}
                             >
                                 {status === 'loading' ? 'Göndərilir...' : 'Göndər'}

@@ -43,7 +43,6 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
     // Benzersiz kategorileri al
     const uniqueCategories = ['all', ...new Set(projects.data.map(project => project.category))];
     const [activeCategory, setActiveCategory] = useState('all');
-    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
     const filteredProjects = projects.data.filter(project =>
         activeCategory === 'all' || project.category === activeCategory
@@ -79,7 +78,6 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.5 }}
                             className="group cursor-pointer"
-                            onClick={() => setSelectedProject(project)}
                         >
                             <div className="relative h-[250px] md:h-[300px] overflow-hidden rounded-lg">
                                 <Image

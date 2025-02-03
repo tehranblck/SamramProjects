@@ -43,12 +43,11 @@ export default function HeroSection() {
     ];
 
     useEffect(() => {
-        const timer = setInterval(() => {
+        const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000); // 5 saniyeye çıkardım, daha iyi bir deneyim için
-
-        return () => clearInterval(timer);
-    }, []);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [slides.length]);
 
     return (
         <div className="relative h-[100vh] pt-36 w-full overflow-hidden">

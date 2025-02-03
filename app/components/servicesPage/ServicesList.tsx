@@ -3,9 +3,34 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
+interface Service {
+    id: number;
+    title: string;
+    description: string;
+    image: {
+        url: string;
+        formats?: {
+            thumbnail?: { url: string };
+            small?: { url: string };
+            medium?: { url: string };
+            large?: { url: string };
+        }
+    }
+}
 
+interface ServicesData {
+    data: Service[];
+    meta: {
+        pagination: {
+            page: number;
+            pageSize: number;
+            pageCount: number;
+            total: number;
+        }
+    }
+}
 
-export default function ServicesList({ services }: { services: any }) {
+export default function ServicesList({ services }: { services: ServicesData }) {
     const baseUrl = "https://api.samramprojects.com";
     const serviesToShow = services?.data;
 
@@ -13,7 +38,7 @@ export default function ServicesList({ services }: { services: any }) {
         <section className="py-12 md:py-20">
             <div className="container mx-auto px-4">
                 <div className="grid gap-8 md:gap-12">
-                    {serviesToShow?.map((service: any, index: number) => (
+                    {serviesToShow?.map((service: Service, index: number) => (
                         <motion.div
                             key={service.id}
                             initial={{ opacity: 0, y: 20 }}
