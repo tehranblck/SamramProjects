@@ -16,9 +16,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Samram Projects vebsaytı",
-  description: "Samram Projects vebsaytı",
+  description: "Samram Projects vebsaytı - Peşəkar tikinti və inşaat xidmətləri",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  themeColor: "#0a0a0a",
+  manifest: "/manifest.json",
   icons: {
     icon: '/logo.png',
+    apple: '/apple-icon.png',
   },
 };
 

@@ -23,3 +23,40 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out forwards;
 }
+
+@layer utilities {
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-height {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Performans için önemli animasyonları transform ile yap */
+@layer components {
+  .optimize-animation {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/* Mobil için font boyutlarını optimize et */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Dokunmatik cihazlar için hover durumlarını düzenle */
+@media (hover: hover) {
+  .hover-effect:hover {
+    /* hover efektleri */
+  }
+}

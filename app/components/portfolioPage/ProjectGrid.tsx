@@ -69,7 +69,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
 
                 {/* Projects Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                    {filteredProjects.map((project) => (
+                    {filteredProjects.map((project, index) => (
                         <motion.div
                             key={project.id}
                             layout
@@ -86,7 +86,11 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                                     fill
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    priority
+                                    priority={index < 2}
+                                    loading={index < 2 ? "eager" : "lazy"}
+                                    quality={75}
+                                    blurDataURL="data:image/jpeg;base64,/9j..."
+                                    placeholder="blur"
                                 />
                                 <div className="absolute inset-0 bg-stone-900/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                     <div className="text-center text-white p-4">

@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useFormValidation } from '../../hooks/useFormValidation';
 
 export default function ContactForm() {
     const [formData, setFormData] = useState({
@@ -14,6 +15,13 @@ export default function ContactForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const formErrors = validateForm();
+
+        if (Object.keys(formErrors).length > 0) {
+            // Form hatalarını göster
+            return;
+        }
+
         setStatus('loading');
 
         try {
@@ -44,12 +52,12 @@ export default function ContactForm() {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    const debouncedHandleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    }, []);
+
+    const { errors, validateForm } = useFormValidation(formData);
 
     return (
         <section className="py-12 md:py-20">
@@ -130,10 +138,11 @@ export default function ContactForm() {
                                     id="name"
                                     name="name"
                                     value={formData.name}
-                                    onChange={handleChange}
+                                    onChange={debouncedHandleChange}
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
+                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                             </div>
 
                             <div>
@@ -145,10 +154,11 @@ export default function ContactForm() {
                                     id="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={handleChange}
+                                    onChange={debouncedHandleChange}
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
+                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                             </div>
 
                             <div>
@@ -160,10 +170,11 @@ export default function ContactForm() {
                                     id="phone"
                                     name="phone"
                                     value={formData.phone}
-                                    onChange={handleChange}
+                                    onChange={debouncedHandleChange}
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
+                                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                             </div>
 
                             <div>
@@ -174,11 +185,12 @@ export default function ContactForm() {
                                     id="message"
                                     name="message"
                                     value={formData.message}
-                                    onChange={handleChange}
+                                    onChange={debouncedHandleChange}
                                     rows={4}
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
+                                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                             </div>
 
                             <button
