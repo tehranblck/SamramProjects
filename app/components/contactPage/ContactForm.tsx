@@ -4,6 +4,13 @@ import Link from 'next/link';
 import { useState, useCallback } from 'react';
 import { useFormValidation } from '../../hooks/useFormValidation';
 
+interface FormErrors {
+    name?: string;
+    email?: string;
+    phone?: string;
+    message?: string;
+}
+
 export default function ContactForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -12,13 +19,17 @@ export default function ContactForm() {
         message: ''
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [showErrors, setShowErrors] = useState(false);
+    const { validateForm } = useFormValidation(formData);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setShowErrors(true);
         const formErrors = validateForm();
 
         if (Object.keys(formErrors).length > 0) {
-            // Form hatalarını göster
+            setErrors(formErrors);
             return;
         }
 
@@ -41,6 +52,8 @@ export default function ContactForm() {
                     phone: '',
                     message: ''
                 });
+                setShowErrors(false);
+                setErrors({});
                 setTimeout(() => setStatus('idle'), 3000);
             } else {
                 throw new Error('Form submission failed');
@@ -55,9 +68,12 @@ export default function ContactForm() {
     const debouncedHandleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-    }, []);
 
-    const { errors, validateForm } = useFormValidation(formData);
+        if (showErrors) {
+            const newErrors = validateForm();
+            setErrors(newErrors);
+        }
+    }, [showErrors, validateForm]);
 
     return (
         <section className="py-12 md:py-20">
@@ -142,7 +158,7 @@ export default function ContactForm() {
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
-                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                                {showErrors && errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                             </div>
 
                             <div>
@@ -158,7 +174,7 @@ export default function ContactForm() {
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
-                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                                {showErrors && errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                             </div>
 
                             <div>
@@ -174,7 +190,7 @@ export default function ContactForm() {
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
-                                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                                {showErrors && errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                             </div>
 
                             <div>
@@ -190,7 +206,7 @@ export default function ContactForm() {
                                     className="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-stone-500 focus:border-stone-500 bg-white text-stone-900"
                                     required
                                 />
-                                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                                {showErrors && errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                             </div>
 
                             <button
