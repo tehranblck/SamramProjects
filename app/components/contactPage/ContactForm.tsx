@@ -116,8 +116,8 @@ export default function ContactForm() {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-gray-200">E-mail</h3>
-                                    <Link href="mailto:info@samramprojects.az" className="text-gray-300 hover:text-gray-900">
-                                        info@samramprojects.az
+                                    <Link href="mailto:info@samramprojects.com" className="text-gray-300 hover:text-gray-900">
+                                        info@samramprojects.com
                                     </Link>
 
                                 </div>
