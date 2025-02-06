@@ -1,4 +1,4 @@
-import next from 'next';
+
 import PortfolioHero from '../components/portfolioPage/PortfolioHero';
 import ProjectGrid from '../components/portfolioPage/ProjectGrid';
 
