@@ -112,7 +112,7 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="border-t border-stone-800 mt-12 pt-8 text-center text-stone-400 text-sm">
-                    <p>© {new Date().getFullYear()} Samram Projects MMC. Bütün hüquqlar qorunur.</p>
+                    Designed by <a target='_blank' className='text-green-500' href="https://www.saytyarat.com/">SaytYarat</a>  <p>© {new Date().getFullYear()} Samram Projects MMC. Bütün hüquqlar qorunur.</p>
                 </div>
             </div>
         </footer>
