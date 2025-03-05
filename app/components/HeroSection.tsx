@@ -55,7 +55,7 @@ export default function HeroSection() {
             {slides.map((slide, index) => (
                 <div style={{ backgroundImage: `url(${slide.image})` }}
                     key={index}
-                    className={`absolute inset-0 bg-cover bg-center md:bg-fixed transition-opacity duration-1000 ease-in-out
+                    className={`absolute inset-0 bg-cover bg-center md:bg-fixed transition-opacity duration-1000 ease-in-out w-full h-full
                         ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
                 >
                     <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />

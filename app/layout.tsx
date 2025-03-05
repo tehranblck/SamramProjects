@@ -34,10 +34,10 @@ export default function RootLayout({
   return (
     <html lang="az">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
         <Header />
-        <main>
+        <main style={{ overflowX: 'hidden' }}>
           {children}
         </main>
         <Footer />
