@@ -1,0 +1,44 @@
+name: Next.js CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Ana branch'e push olduğunda tetiklenir.
+  pull_request:
+    branches:
+      - main  # Ana branch'e yapılan PR'lar tetiklenir.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Hangi işletim sisteminde çalışacağını belirtir.
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Kodun GitHub reposundan çekilmesini sağlar.
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19'  # Kullanacağınız Node.js sürümü.
+
+      - name: Install dependencies
+        run: |
+          npm install  # Bağımlılıkları yükler.
+
+      - name: Build Next.js project
+        run: |
+          npm run build  # Projeyi derler.
+
+      - name: Set up SSH and Deploy to Server
+        run: |
+          # SSH özel anahtarını kaydedip doğru izinleri ayarlıyoruz.
+          echo "$SSH_PRIVATE_KEY" | tee ~/.ssh/id_rsa > /dev/null
+          chmod 600 ~/.ssh/id_rsa  # SSH anahtarının doğru izinlere sahip olmasını sağlıyoruz
+          
+          # Sunucunun SSH anahtarını doğruluyoruz
+          ssh-keyscan -H 154.53.160.109 >> ~/.ssh/known_hosts  # Sunucunun SSH anahtarını ekler
+
+          # Sunucuya bağlanıp deploy işlemini yapıyoruz
+          ssh -o StrictHostKeyChecking=no root@154.53.160.109 "cd front/ && git pull && npm install && npm run build && pm2 restart all"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # GitHub secret'ındaki SSH anahtarını alır
