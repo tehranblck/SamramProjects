@@ -6,7 +6,7 @@ export default async function ServicesPage() {
     const services = await fetch("https://api.samramprojects.com/api/services?populate=*",
         {
             next: {
-                revalidate: 10
+                revalidate: 3600
             }
         }
     );

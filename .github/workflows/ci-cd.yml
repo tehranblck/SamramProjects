@@ -42,3 +42,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@154.53.160.109 "cd front/ && git pull && npm install && npm run build && pm2 restart all"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # GitHub secret'ındaki SSH anahtarını alır
+            
